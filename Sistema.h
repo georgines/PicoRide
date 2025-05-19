@@ -45,25 +45,15 @@
 
 struct Sistema
 {   
-    Oled &tela;
     PWM &buzzer;
     volatile absolute_time_t inicioAtivacao;
     volatile bool ativo;
 };
 
 QueueHandle_t fila_comandos; 
+QueueHandle_t fila_bluetooth;
 
-// Protótipos das funções organizados por responsabilidades
-
-// funcoes buzzer
 absolute_time_t pegarTempoAbsolutoAtual();
 void inicializarContadorDeTempoDoBuzzer(Sistema &sistema, repeating_timer &timer);
 bool desabilitarBuzzer(struct repeating_timer *t);
 void acionarBuzzer(Sistema &sistema);
-
-//função de tempo
-uint32_t timer_callback(uint64_t tempo_final);
-
-// Funções de exibição
-
-// Funções de loop

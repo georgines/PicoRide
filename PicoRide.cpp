@@ -2,21 +2,18 @@
 #include "auxiliarBuzzer.h"
 #include "loopPrincipal.h"
 #include "loopBluetooth.h"
+#include "loopDisplay.h"
 
 int main()
 {
     stdio_init_all();
 
-    Oled tela(i2c1, PINO_SDA_TELA, PINO_SCL_TELA);
-    tela.definirFonte(fonte_customizada);
-    tela.inicializar();
-    tela.limpar();
+ 
 
     PWM buzzer(PINO_BUZZER, WRAP_BUZZER, DIVISOR_CLOCK_BUZZER);
     buzzer.iniciar(DUTY_INICIAL_BUZZER);
 
-    Sistema sistema = {
-        .tela = tela,
+    Sistema sistema = {       
         .buzzer = buzzer,
         .inicioAtivacao = pegarTempoAbsolutoAtual(),
         .ativo = false};
@@ -33,6 +30,7 @@ int main()
 
     xTaskCreate(loopPrincipal, "loopPricipal", 8096, (void *)&sistema, 2, NULL);
     xTaskCreate(loopBluetooth, "loopBluetooth", 8096, (void *)&sistema, 2, NULL);
+    // xTaskCreate(loopDisplay, "loopDisplay", 8096, (void *)&sistema, 2, NULL);
 
     vTaskStartScheduler();
     return 1;
