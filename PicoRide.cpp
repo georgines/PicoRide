@@ -21,10 +21,19 @@ int main()
         .inicioAtivacao = pegarTempoAbsolutoAtual(),
         .ativo = false};
 
+    fila_comandos = xQueueCreate(1, sizeof(char));
+
+    mutex_tempo = xSemaphoreCreateMutex();
+
     repeating_timer timer;
     inicializarContadorDeTempoDoBuzzer(sistema, timer);
 
-    xTaskCreate(loopPrincipal, "loopPricipal", 512, (void *)&sistema, 2, NULL);
+    repeating_timer_t tempo;
+    iniciarContagemTempoDoCronometro(tempo);
+
+    xTaskCreate(loopPrincipal, "loopPricipal", 8096, (void *)&sistema, 2, NULL);
+    xTaskCreate(loopBluetooth, "loopBluetooth", 8096, (void *)&sistema, 2, NULL);
 
     vTaskStartScheduler();
+    return 1;
 }
