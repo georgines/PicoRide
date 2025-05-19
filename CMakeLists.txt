@@ -27,6 +27,7 @@ set(PICO_BOARD pico_w CACHE STRING "Board type")
 
 # Pull in Raspberry Pi Pico SDK (must be before project)
 include(pico_sdk_import.cmake)
+include(${CMAKE_CURRENT_LIST_DIR}/freertos/portable/ThirdParty/GCC/RP2040/FreeRTOS_Kernel_import.cmake)
 
 project(PicoRide C CXX ASM)
 
@@ -67,8 +68,9 @@ target_include_directories(PicoRide PRIVATE
 
 # Add any user requested libraries
 target_link_libraries(PicoRide 
-        
-        )
+        FreeRTOS-Kernel
+        FreeRTOS-Kernel-Heap4
+)
 
 pico_add_extra_outputs(PicoRide)
 

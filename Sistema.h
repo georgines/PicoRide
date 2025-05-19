@@ -1,12 +1,12 @@
 #pragma once
 
+#include "FreeRTOS.h"
 #include "pico/stdlib.h"
+#include <stdio.h>
 #include "Oled.h"
-
 #include "PWM.h"
-
-
-
+#include "task.h"
+#include "queue.h"
 
 // pinos tela
 #define PINO_SDA_TELA 14
@@ -34,13 +34,23 @@
 #define DUTY_DESLIGAR_BUZZER DUTY_INICIAL_BUZZER
 #define TEMPO_BUZZER_MS 100
 
+#define TEMPO_05000_MS  05000
+#define TEMPO_10000_MS 10000
+#define TEMPO_20000_MS 20000
+#define TEMPO_30000_MS 20000
+#define TEMPO_40000_MS 40000
+#define TEMPO_50000_MS 50000
+#define TEMPO_60000_MS 60000
+
 struct Sistema
-{
+{   
     Oled &tela;
     PWM &buzzer;
     volatile absolute_time_t inicioAtivacao;
     volatile bool ativo;
 };
+
+QueueHandle_t fila_comandos = xQueueCreate(1, sizeof(char));
 
 // Protótipos das funções organizados por responsabilidades
 

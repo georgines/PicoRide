@@ -1,5 +1,7 @@
 #include "Sistema.h"
 #include "auxiliarBuzzer.h"
+#include "loopPrincipal.h"
+#include "loopBluetooth.h"
 
 int main()
 {
@@ -19,5 +21,10 @@ int main()
         .inicioAtivacao = pegarTempoAbsolutoAtual(),
         .ativo = false};
 
-        
+    repeating_timer timer;
+    inicializarContadorDeTempoDoBuzzer(sistema, timer);
+
+    xTaskCreate(loopPrincipal, "loopPricipal", 512, (void *)&sistema, 2, NULL);
+
+    vTaskStartScheduler();
 }
