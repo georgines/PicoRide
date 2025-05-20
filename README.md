@@ -49,6 +49,11 @@ Para utilizar a comunicação serial:
 - Conecte o GND do adaptador ao GND do Pico, o RX do adaptador ao TX do Pico (GPIO 0), e o TX do adaptador ao RX do Pico (GPIO 1).
 - Configure a velocidade da comunicação serial para 115200 bps.
 
+## Desenvolvedores
+
+- Tacila Nunes: [GitHub](https://github.com/tacinunesc)
+- Diego Souza: [GitHub](https://github.com/diego-soz)
+
 ## Bluetooth
 
 A biblioteca de Bluetooth utilizada neste projeto foi criada com base na seguinte biblioteca:
