@@ -51,8 +51,9 @@ Para utilizar a comunicação serial:
 
 ## Desenvolvedores
 
-- Tacila Nunes: [GitHub](https://github.com/tacinunesc)
-- Diego Souza: [GitHub](https://github.com/diego-soz)
+- Georgines Bezerra: [georgines](https://github.com/georgines)
+- Tacila Nunes: [tacinunesc](https://github.com/tacinunesc)
+- Diego Souza: [tacinunesc](https://github.com/diego-soz)
 
 ## Bluetooth
 
