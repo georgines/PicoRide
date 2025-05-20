@@ -44,15 +44,16 @@ void loopLED(void *params)
 
     while (true)
     {
-        if (dispostivoBluetoothConectado)
+        if (equipmentoLigado)
         {
-            alternarLED(ledVerde, EstadoLED::LIGADO, EstadoLED::DESLIGADO);
+            ledVerde(EstadoLED::LIGADO);
             ledVermelho(EstadoLED::DESLIGADO);
+            vTaskDelay(pdMS_TO_TICKS(TEMPO_DELAY_MS));
         }
         else
         {
-            alternarLED(ledVermelho, EstadoLED::LIGADO, EstadoLED::DESLIGADO);
             ledVerde(EstadoLED::DESLIGADO);
+            alternarLED(ledVermelho, EstadoLED::LIGADO, EstadoLED::DESLIGADO);
         }
     }
 }

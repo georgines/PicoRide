@@ -69,6 +69,7 @@ static void loopContadorDeTempo(void *pv)
                 case INICIAR:
                     tempo_restante = msg.valor_ms;
                     estado = INICIAR;
+                    equipmentoLigado = true;
                     break;
                 case PAUSAR:
                     estado = PAUSAR;
@@ -92,6 +93,10 @@ static void loopContadorDeTempo(void *pv)
                 if (tempo_restante > 0)
                 {
                     tempo_restante--;
+                    if (tempo_restante == 0)
+                    {
+                        equipmentoLigado = false;
+                    }
                 }
                 xSemaphoreGive(mutexTemporizador);
             }

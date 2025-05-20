@@ -41,6 +41,7 @@
 #define DUTY_DESLIGAR_BUZZER DUTY_INICIAL_BUZZER
 #define TEMPO_BUZZER_MS 100
 
+
 #define TEMPO_5_MIN 300000
 #define TEMPO_10_MIN 600000
 #define TEMPO_30_MIN 1800000
@@ -59,6 +60,8 @@ BluetoothSerial bluetooth("PicoRide");
 
 bool dispostivoBluetoothConectado = false;
 bool ultimo_dispostivoBluetoothConectado = false;
+
+bool equipmentoLigado = false;
 
 absolute_time_t pegarTempoAbsolutoAtual();
 void inicializarContadorDeTempoDoBuzzer(Sistema &sistema, repeating_timer &timer);
