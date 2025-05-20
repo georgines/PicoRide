@@ -14,23 +14,18 @@ void receberSerialUsbEEnviarParaFila()
 
 void onData(const uint8_t *data, uint16_t len)
 {
-
-    // bt.enviarString("Received: ");
-    // bt.enviar(data, len);
     char ch = data[0];
-    xQueueSend(fila_comandos, &ch, pdMS_TO_TICKS(10));
-    // bt.enviarStringFormatada("Tempo Total:  %u\n", temporizador_ms);
+    xQueueSend(fila_comandos, &ch, pdMS_TO_TICKS(10)); 
 }
 
-void onDataExterno()
+void callbackLoopBluetooth()
 {
     receberSerialUsbEEnviarParaFila();
-    // vTaskDelay(pdMS_TO_TICKS(25));
 }
 
 void loopBluetooth(void *parametro)
 {
     bt.definirCallbackRecebimento(onData);
-    bt.iniciarLoopTimer(onDataExterno, 50);
+    bt.iniciarLoopTimer(callbackLoopBluetooth, 50);
     bt.executar();
 }

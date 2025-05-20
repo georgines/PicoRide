@@ -4,7 +4,7 @@
 #include "auxiliarBuzzer.h"
 #include "loopContadorTempo.h"
 
- void processarComandoControle(char comando, bool &contador_pausado, uint32_t &temporizador_ms)
+ void processarComandoControle(char comando, bool &contador_pausado, uint32_t &temporizador_ms, Sistema &sistema)
 {
     const char *mensagem = "";  
 
@@ -62,13 +62,15 @@
     }
 
     printf("%s | Temporizador: %ums\n", mensagem, temporizador_ms);
+    acionarBuzzer(sistema);
 }
 
 
 void loopPrincipal(void *parametro)
 {
    
-
+    Sistema *sistema = reinterpret_cast<Sistema *>(parametro);
+    
     char comando = 0;
     bool contador_pausado = false;
     uint32_t temporizador_ms = 0;
@@ -78,7 +80,7 @@ void loopPrincipal(void *parametro)
        
         if (xQueueReceive(fila_comandos, &comando, pdMS_TO_TICKS(10)))
         {
-            processarComandoControle(comando, contador_pausado, temporizador_ms);
+            processarComandoControle(comando, contador_pausado, temporizador_ms, *sistema);
         }
 
         if(tempo_restante != ultomo_tempo_restante)
