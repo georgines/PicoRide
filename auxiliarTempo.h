@@ -4,7 +4,7 @@
 
 SemaphoreHandle_t mutex_tempo;
 volatile uint32_t tempo_restante_ms = 0;
-uint32_t temporizador_ms = 0;
+volatile uint32_t temporizador_ms = 0;
 volatile bool contador_ativo = false;
 
 void iniciarContador(uint32_t tempo_ms)
