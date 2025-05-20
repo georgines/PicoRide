@@ -12,20 +12,6 @@ PicoRide é um projeto portátil de gestão de locação de veículos infantis, 
 - **Controle de Buzzer**: Fornece feedback sonoro para ações do usuário.
 - **Integração com FreeRTOS**: Gerencia múltiplas tarefas de forma eficiente.
 
-## Instalação do FreeRTOS
-
-Este projeto utiliza o FreeRTOS para gerenciamento de tarefas. Para instalar o FreeRTOS, clone o repositório para pasta raiz no link abaixo:
-
-[Repositório FreeRTOS](https://github.com/FreeRTOS/FreeRTOS-Kernel.git)
-
-### Passos para Instalar o FreeRTOS
-
-1. Clone o repositório:
-
-   ```bash
-   git clone https://github.com/FreeRTOS/FreeRTOS-Kernel.git freertos
-   ```
-
 ## Como Configurar o Ambiente
 
 1. Instale o [Visual Studio Code (VS Code)](https://code.visualstudio.com/).
@@ -33,6 +19,19 @@ Este projeto utiliza o FreeRTOS para gerenciamento de tarefas. Para instalar o F
 3. No VS Code, instale a extensão "Raspberry Pi Pico".
 4. Certifique-se de que a SDK do Raspberry Pi Pico W está configurada na versão 2.1.1.
 5. Importe o projeto utilizando a extensão "Raspberry Pi Pico" no VS Code. Basta abrir a pasta do projeto e seguir as instruções da extensão para configurar o ambiente.
+6. Abra um terminal Bash no diretório do projeto no VS Code e rode os comandos abaixo:
+
+7. Dê permissão de execução ao instalador Bash:
+
+   ```bash
+   chmod +x instalador_freertos.sh
+   ```
+
+8. Execute o instalador para clonar o FreeRTOS:
+
+   ```bash
+   ./instalador_freertos.sh
+   ```
 
 ## Como Compilar e Executar
 
