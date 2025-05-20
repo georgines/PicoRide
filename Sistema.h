@@ -16,6 +16,9 @@
 #define PINO_SDA_TELA 14
 #define PINO_SCL_TELA 15
 
+#define PINO_LED_VERMELHO 13
+#define PINO_LED_VERDE 11
+
 // pinos serial
 #define PINO_TX_SERIAL 0
 #define PINO_RX_SERIAL 1

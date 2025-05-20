@@ -5,6 +5,7 @@
 #include "loopBluetooth.h"
 #include "loopContadorTempo.h"
 #include "loopExibicao.h"
+#include "loopLED.h"
 
 int main()
 {
@@ -28,6 +29,7 @@ int main()
     inicializarLoopBluetooth();
     iniciarContadorDeTempo();
     inicializarLoopExibicao();
+    inicializarLoopLED();
     vTaskStartScheduler();
     
     return 1;
