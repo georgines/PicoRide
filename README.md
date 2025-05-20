@@ -53,7 +53,7 @@ Para utilizar a comunicação serial:
 
 - Georgines Bezerra: [georgines](https://github.com/georgines)
 - Tacila Nunes: [tacinunesc](https://github.com/tacinunesc)
-- Diego Souza: [tacinunesc](https://github.com/diego-soz)
+- Diego Souza: [diego-soz](https://github.com/diego-soz)
 
 ## Bluetooth
 
