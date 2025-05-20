@@ -21,7 +21,7 @@ typedef struct
 } MsgTemporizador_t;
 
 volatile uint32_t tempo_restante = 0;
-volatile uint32_t ultomo_tempo_restante = -1;
+volatile uint32_t ultimo_tempo_restante = -1;
 volatile StatusTemporizador_t estado = RESETAR;
 
 QueueHandle_t filaTemporizador;

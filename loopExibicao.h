@@ -22,7 +22,7 @@ void loopExibicao(void *params)
     while (true)
     {
 
-        if (tempo_restante != ultomo_tempo_restante || dispostivoBluetoothConectado != ultimo_dispostivoBluetoothConectado)
+        if (tempo_restante != ultimo_tempo_restante || dispostivoBluetoothConectado != ultimo_dispostivoBluetoothConectado)
         {
             tela.imprimir(0, LINHA_TITULO, "%s", "    PicoRide    ");
             tela.imprimir(0, LINHA_1, "Tempo locacao   ");
@@ -32,7 +32,7 @@ void loopExibicao(void *params)
             tela.imprimir(0, LINHA_3, "BT: %s", dispostivoBluetoothConectado ? "Conec." : "Desconec.");
             tela.renderizarDisplay();
             printf("Tempo restante: %u ms\n", tempo_restante);
-            ultomo_tempo_restante = tempo_restante;
+            ultimo_tempo_restante = tempo_restante;
             ultimo_dispostivoBluetoothConectado = dispostivoBluetoothConectado;
         }
         vTaskDelay(pdMS_TO_TICKS(500));
