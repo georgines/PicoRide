@@ -4,6 +4,7 @@
 #include "pico/stdlib.h"
 #include "hardware/uart.h"
 #include <stdio.h>
+#include <cstring>
 #include "Oled.h"
 #include "PWM.h"
 #include "task.h"

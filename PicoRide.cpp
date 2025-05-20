@@ -3,6 +3,7 @@
 #include "loopPrincipal.h"
 #include "loopBluetooth.h"
 #include "loopContadorTempo.h"
+#include "loopExibicao.h"
 
 
 int main()
@@ -35,10 +36,10 @@ int main()
     repeating_timer timer;
     inicializarContadorDeTempoDoBuzzer(sistema, timer);
 
-    xTaskCreate(loopPrincipal, "loopPricipal", 8096, (void *)&sistema, 2, NULL);
-    xTaskCreate(loopBluetooth, "loopBluetooth", 8096, NULL, 2, NULL);
+    xTaskCreate(loopPrincipal, "loopPricipal", 8192, (void *)&sistema, 2, NULL);
+    xTaskCreate(loopBluetooth, "loopBluetooth", 8192, NULL, 2, NULL);
     iniciarContadorDeTempo();
-
+    inicializarLoopExibicao();
     vTaskStartScheduler();
     return 1;
 }

@@ -18,6 +18,8 @@ typedef struct
 
 volatile uint32_t tempo_restante = 0;
 volatile uint32_t ultomo_tempo_restante = -1;
+volatile uint32_t temporizador_ms = 0;
+volatile uint32_t ultimo_temporizador_ms =-1;
 volatile StatusTemporizador_t estado = RESETAR;
 static QueueHandle_t filaTemporizador;
 static SemaphoreHandle_t mutexTemporizador;
@@ -100,5 +102,5 @@ void iniciarContadorDeTempo()
 {   
     filaTemporizador = xQueueCreate(4, sizeof(MsgTemporizador_t));
     mutexTemporizador = xSemaphoreCreateMutex();  
-    xTaskCreate(loopContadorDeTempo, "LoopContadorDeTempo", 128, NULL, 2, NULL);
+    xTaskCreate(loopContadorDeTempo, "LoopContadorDeTempo", 128, NULL, 3, NULL);
 }
