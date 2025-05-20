@@ -27,6 +27,7 @@ set(PICO_BOARD pico_w CACHE STRING "Board type")
 
 # Pull in Raspberry Pi Pico SDK (must be before project)
 include(pico_sdk_import.cmake)
+include(${CMAKE_CURRENT_LIST_DIR}/freertos/portable/ThirdParty/GCC/RP2040/FreeRTOS_Kernel_import.cmake)
 
 project(PicoRide C CXX ASM)
 
@@ -35,18 +36,35 @@ pico_sdk_init()
 
 # Add executable. Default name is the project name, version 0.1
 
-add_executable(PicoRide PicoRide.cpp )
+add_executable(PicoRide 
+    PicoRide.cpp
+    Oled.cpp
+    PWM.cpp
+    SerialBluetooth.cpp
+)
 
 pico_set_program_name(PicoRide "PicoRide")
 pico_set_program_version(PicoRide "0.1")
 
 # Modify the below lines to enable/disable output over UART/USB
-pico_enable_stdio_uart(PicoRide 0)
-pico_enable_stdio_usb(PicoRide 1)
+pico_enable_stdio_uart(PicoRide 1)
+pico_enable_stdio_usb(PicoRide 0)
 
 # Add the standard library to the build
 target_link_libraries(PicoRide
-        pico_stdlib)
+        pico_stdlib
+        hardware_i2c
+        hardware_uart
+        pico_binary_info
+        hardware_adc
+        hardware_pwm
+        hardware_gpio
+        hardware_timer
+        hardware_irq
+        pico_btstack_classic
+        pico_btstack_cyw43
+        pico_cyw43_arch_none
+)
 
 # Add the standard include files to the build
 target_include_directories(PicoRide PRIVATE
@@ -55,8 +73,9 @@ target_include_directories(PicoRide PRIVATE
 
 # Add any user requested libraries
 target_link_libraries(PicoRide 
-        
-        )
+        FreeRTOS-Kernel
+        FreeRTOS-Kernel-Heap4
+)
 
 pico_add_extra_outputs(PicoRide)
 

@@ -1,14 +1,36 @@
-#include <stdio.h>
-#include "pico/stdlib.h"
-
-
+#include "Sistema.h"
+#include "auxiliarBuzzer.h"
+#include "auxiliarSerial.h"
+#include "loopPrincipal.h"
+#include "loopBluetooth.h"
+#include "loopContadorTempo.h"
+#include "loopExibicao.h"
+#include "loopLED.h"
 
 int main()
 {
     stdio_init_all();
+    inicializarSerial();
 
-    while (true) {
-        printf("Hello, world!\n");
-        sleep_ms(1000);
-    }
+    printf("Iniciando...\n");
+
+    PWM buzzer(PINO_BUZZER, WRAP_BUZZER, DIVISOR_CLOCK_BUZZER);
+    buzzer.iniciar(DUTY_INICIAL_BUZZER);
+
+    Sistema sistema = {
+        .buzzer = buzzer,
+        .inicioAtivacao = pegarTempoAbsolutoAtual(),
+        .ativo = false};
+
+    repeating_timer timer;
+
+    inicializarContadorDeTempoDoBuzzer(sistema, timer);
+    inicializarLoopPrincipal(sistema);
+    inicializarLoopBluetooth();
+    iniciarContadorDeTempo();
+    inicializarLoopExibicao();
+    inicializarLoopLED();
+    vTaskStartScheduler();
+    
+    return 1;
 }
