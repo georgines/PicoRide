@@ -3,65 +3,131 @@
 #include "Sistema.h"
 #include "auxiliarBuzzer.h"
 #include "auxiliarTempo.h"
-#include <array>
 
-// Função para processar comandos de incremento de tempo
-inline bool processarComandoTempo(char comando, uint32_t &temporizador_ms) {
-    constexpr std::array<uint32_t, 7> incrementos = {
-        TEMPO_5000_MS, TEMPO_10000_MS, TEMPO_20000_MS, TEMPO_30000_MS,
-        TEMPO_40000_MS, TEMPO_50000_MS, TEMPO_60000_MS
-    };
-    constexpr char comandos_tempo[] = {'a','b','c','d','e','f','g'};
-    for (size_t i = 0; i < incrementos.size(); ++i) {
-        if (comando == comandos_tempo[i]) {
-            temporizador_ms += incrementos[i];
-            printf("[CMD %c] +%ums | Temporizador: %ums\n", comando, incrementos[i], temporizador_ms);
-            return true;
-        }
-    }
-    return false;
+// Função para iniciar o contador
+inline void iniciarContador(uint32_t &tempo_ms)
+{
+    tempo_restante_ms = tempo_ms;
+    contador_ativo = true;
+    printf("[TIMER] Contador iniciado com %ums\n", tempo_ms);
 }
 
-// Função para processar comandos de controle do temporizador
-inline void processarComandoControle(char comando, uint32_t &temporizador_ms, bool &contador_pausado) {
+// Função para pausar o contador
+inline bool pausarContador()
+{
+    if (contador_ativo)
+    {
+        contador_ativo = false;
+        printf("[TIMER] Contador pausado\n");
+        return true;
+    }
+    else
+    {
+        contador_ativo = true;
+        printf("[TIMER] Contador retomado\n");
+        return false;
+    }
+}
+
+// Função para resetar o contador
+inline void resetarContador()
+{
+    contador_ativo = false;
+    tempo_restante_ms = 0;
+    printf("[TIMER] Contador resetado\n");
+}
+
+
+ void processarComandoControle(char comando, bool &contador_pausado, uint32_t &temporizador_ms)
+{
+    const char *mensagem = "";  
+
     switch (comando)
     {
+    case 'a':
+        temporizador_ms += TEMPO_5000_MS;
+        mensagem = "[CMD a] +5000ms";
+        break;
+    case 'b':
+        temporizador_ms += TEMPO_10000_MS;
+        mensagem = "[CMD b] +10000ms";
+        break;
+    case 'c':
+        temporizador_ms += TEMPO_20000_MS;
+        mensagem = "[CMD c] +20000ms";
+        break;
+    case 'd':
+        temporizador_ms += TEMPO_30000_MS;
+        mensagem = "[CMD d] +30000ms";
+        break;
+    case 'e':
+        temporizador_ms += TEMPO_40000_MS;
+        mensagem = "[CMD e] +40000ms";
+        break;
+    case 'f':
+        temporizador_ms += TEMPO_50000_MS;
+        mensagem = "[CMD f] +50000ms";
+        break;
+    case 'g':
+        temporizador_ms += TEMPO_60000_MS;
+        mensagem = "[CMD g] +60000ms";
+        break;
     case 'i':
+        if (temporizador_ms == 0)
+        {
+            mensagem = "[CMD i] Nenhum tempo definido";
+            break;
+        }
         iniciarContador(temporizador_ms);
-        printf("[CMD i] Início da contagem! Tempo total: %ums\n", temporizador_ms);
-        return;
+        mensagem = "[CMD i] Início da contagem";
+        break;
     case 'p':
         contador_pausado = pausarContador();
-        printf(contador_pausado ? "[CMD p] Contagem pausada.\n" : "[CMD p] Contagem retomada.\n");
-        return;
+        mensagem = contador_pausado ? "[CMD p] Contagem pausada" : "[CMD p] Contagem retomada";
+        break;
     case 'r':
         temporizador_ms = 0;
         resetarContador();
-        printf("[CMD r] Temporizador resetado.\n");
-        return;
+        mensagem = "[CMD r] Temporizador resetado";
+        break;
     default:
-        printf("[CMD ?] Comando desconhecido: %c\n", comando);
-        return;
+        mensagem = "[CMD ?] Comando desconhecido";
+        break;
     }
+
+    printf("%s | Temporizador: %ums\n", mensagem, temporizador_ms);
 }
 
-// Loop principal do sistema: gerencia comandos recebidos e controla o temporizador
-inline void loopPrincipal(void *parametro)
+
+void loopPrincipal(void *parametro)
 {
     auto *sistema = static_cast<Sistema *>(parametro);
 
-    char comando = 0;    
+    char comando = 0;
     bool contador_pausado = false;
-
+    static uint32_t temporizador_ms = 0;
     while (true)
     {
-        if (xQueueReceive(fila_comandos, &comando, 0))
+        // Receber comandos da fila
+        if (xQueueReceive(fila_comandos, &comando, pdMS_TO_TICKS(10)))
         {
-            if (!processarComandoTempo(comando, temporizador_ms)) {
-                processarComandoControle(comando, temporizador_ms, contador_pausado);
-            }
-            acionarBuzzer(*sistema);
+            processarComandoControle(comando, contador_pausado, temporizador_ms);
         }
-        vTaskDelay(pdMS_TO_TICKS(1));
+
+        // Atualizar temporizador se não estiver pausado
+        if (!contador_pausado && temporizador_ms > 0)
+        {
+            temporizador_ms -= 10; // Decrementa 10ms por iteração
+
+            if (temporizador_ms == 0)
+            {
+                printf("[TIMER] Temporizador chegou a zero!\n");
+                resetarContador();
+                contador_pausado = true; // Pausa automaticamente ao atingir zero
+            }
+        }
+
+        // Delay para evitar polling excessivo
+        vTaskDelay(pdMS_TO_TICKS(10));
     }
 }

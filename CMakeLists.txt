@@ -40,25 +40,30 @@ add_executable(PicoRide
     PicoRide.cpp
     Oled.cpp
     PWM.cpp
+    SerialBluetooth.cpp
 )
 
 pico_set_program_name(PicoRide "PicoRide")
 pico_set_program_version(PicoRide "0.1")
 
 # Modify the below lines to enable/disable output over UART/USB
-pico_enable_stdio_uart(PicoRide 0)
-pico_enable_stdio_usb(PicoRide 1)
+pico_enable_stdio_uart(PicoRide 1)
+pico_enable_stdio_usb(PicoRide 0)
 
 # Add the standard library to the build
 target_link_libraries(PicoRide
         pico_stdlib
         hardware_i2c
+        hardware_uart
         pico_binary_info
         hardware_adc
         hardware_pwm
         hardware_gpio
         hardware_timer
         hardware_irq
+         pico_btstack_classic
+        pico_btstack_cyw43
+        pico_cyw43_arch_none
 )
 
 # Add the standard include files to the build

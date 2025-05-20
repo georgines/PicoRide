@@ -10,6 +10,7 @@
 BluetoothSerial *BluetoothSerial::instancia = nullptr;
 
 static btstack_packet_callback_registration_t registroCallbackHci;
+static btstack_context_callback_registration_t callback_registration;
 
 void BluetoothSerial::inicializarBluetoothStack()
 {
@@ -197,4 +198,21 @@ void BluetoothSerial::enviarStringFormatada(const char *formato, ...)
     if ((size_t)len > sizeof(buffer))
         len = sizeof(buffer);
     this->enviar(reinterpret_cast<const uint8_t *>(buffer), len);
+}
+
+void BluetoothSerial::iniciarLoopTimer(std::function<void()> callbackExterno, uint32_t intervalo_ms) {
+    this->callbackExternoLoop = std::move(callbackExterno);
+
+    btstack_run_loop_set_timer_handler(&timerLoop, [](btstack_timer_source_t *ts) {
+        BluetoothSerial* instancia = BluetoothSerial::instancia;
+        if (instancia && instancia->callbackExternoLoop) {
+            instancia->callbackExternoLoop();
+        }
+        btstack_run_loop_set_timer(ts, instancia->intervaloLoop);
+        btstack_run_loop_add_timer(ts);
+    });
+
+    this->intervaloLoop = intervalo_ms;
+    btstack_run_loop_set_timer(&timerLoop, intervalo_ms);
+    btstack_run_loop_add_timer(&timerLoop);
 }

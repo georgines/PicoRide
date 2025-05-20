@@ -2,12 +2,14 @@
 
 #include "FreeRTOS.h"
 #include "pico/stdlib.h"
+#include "hardware/uart.h"
 #include <stdio.h>
 #include "Oled.h"
 #include "PWM.h"
 #include "task.h"
 #include "queue.h"
 #include "semphr.h"
+#include "SerialBluetooth.h"
 
 // pinos tela
 #define PINO_SDA_TELA 14
@@ -52,6 +54,8 @@ struct Sistema
 
 QueueHandle_t fila_comandos; 
 QueueHandle_t fila_bluetooth;
+
+BluetoothSerial bt("PicoRide");
 
 absolute_time_t pegarTempoAbsolutoAtual();
 void inicializarContadorDeTempoDoBuzzer(Sistema &sistema, repeating_timer &timer);
