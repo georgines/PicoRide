@@ -5,6 +5,7 @@
 #include "btstack_run_loop.h"
 
 using CallbackRecebimentoBluetooth = std::function<void(const uint8_t *dados, uint16_t tamanho)>;
+using CallbackConexaoBluetooth = std::function<void()>; // Callback para conexão e desconexão
 
 class BluetoothSerial
 {
@@ -15,6 +16,8 @@ public:
     void enviar(const uint8_t *dados, uint16_t tamanho);
     uint16_t receber(uint8_t *buffer, uint16_t tamanhoMaximo);
     void definirCallbackRecebimento(CallbackRecebimentoBluetooth callbackRecebimento);
+    void definirCallbackConexao(CallbackConexaoBluetooth callbackConexao);
+    void definirCallbackDesconexao(CallbackConexaoBluetooth callbackDesconexao);
     void executar();
     void enviarString(const char *texto);
     void enviarStringFormatada(const char *formato, ...);
@@ -47,6 +50,8 @@ private:
     uint8_t *bufferRecebimento = nullptr;
     uint16_t tamanhoRecebido = 0;
     CallbackRecebimentoBluetooth callbackRecebimento = nullptr;
+    CallbackConexaoBluetooth callbackConexao = nullptr;
+    CallbackConexaoBluetooth callbackDesconexao = nullptr;
     uint32_t intervaloLoop = 1000;
     std::function<void()> callbackExternoLoop = nullptr;
 

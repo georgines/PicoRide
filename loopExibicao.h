@@ -34,17 +34,15 @@ void loopExibicao(void *params)
         //     xSemaphoreGive(semaforo_exibicao);
         // }
 
-        if (tempo_restante != ultomo_tempo_restante || temporizador_ms != ultimo_temporizador_ms)
-        {
-            tela.limparAreaLinha(56, LINHA_1);
-            tela.limparAreaLinha(56, LINHA_2);
+        if (tempo_restante != ultomo_tempo_restante)
+        { 
             tela.imprimir(0, LINHA_TITULO, "%s", "    PicoRide    ");
             tela.imprimir(0, LINHA_1, "Tempo locacao   ");
+            tela.limparLinha(LINHA_2);
             tela.imprimir(0, LINHA_2, "%ds", tempo_restante);
             tela.renderizarDisplay();
             printf("Tempo restante: %u ms\n", tempo_restante);
-            ultomo_tempo_restante = tempo_restante;
-            ultimo_temporizador_ms = temporizador_ms;
+            ultomo_tempo_restante = tempo_restante;     
         }
         vTaskDelay(pdMS_TO_TICKS(500));
     }

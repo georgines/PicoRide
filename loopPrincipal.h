@@ -79,7 +79,7 @@ void loopPrincipal(void *parametro)
 
         if (xQueueReceive(fila_comandos, &comando, pdMS_TO_TICKS(10)))
         {
-            processarComandoControle(comando, contador_pausado, temporizador_ms, *sistema);
+            processarComandoControle(comando, contador_pausado, tempo_restante, *sistema);
         }
         
         vTaskDelay(pdMS_TO_TICKS(10));
