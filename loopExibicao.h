@@ -24,10 +24,12 @@ void loopExibicao(void *params)
 
         if (tempo_restante != ultimo_tempo_restante || dispostivoBluetoothConectado != ultimo_dispostivoBluetoothConectado)
         {
+            uint32_t minutos = tempo_restante / 60000;
+            uint32_t segundos = (tempo_restante % 60000) / 1000;
             tela.imprimir(0, LINHA_TITULO, "%s", "    PicoRide    ");
             tela.imprimir(0, LINHA_1, "Tempo locacao   ");
             tela.limparLinha(LINHA_2);
-            tela.imprimir(0, LINHA_2, "%ds", tempo_restante);
+            tela.imprimir(0, LINHA_2, "%02u:%02u", minutos, segundos);
             tela.limparLinha(LINHA_3);
             tela.imprimir(0, LINHA_3, "BT: %s", dispostivoBluetoothConectado ? "Conec." : "Desconec.");
             tela.renderizarDisplay();

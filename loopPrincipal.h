@@ -12,7 +12,9 @@
 void exibirMensagem(const char *mensagem, uint32_t temporizador_ms)
 {
     char mensagem_formatada[64];
-    snprintf(mensagem_formatada, sizeof(mensagem_formatada), "%s | Temporizador: %ums\n", mensagem, temporizador_ms);
+    uint32_t minutos = temporizador_ms / 60000;
+    uint32_t segundos = (temporizador_ms % 60000) / 1000;
+    snprintf(mensagem_formatada, sizeof(mensagem_formatada), "%s | Temporizador: %02u:%02u\n", mensagem, minutos, segundos); // Formato MM:SS
     enviarComandoBluetooth(mensagem_formatada);
     printf(mensagem_formatada);
 }
