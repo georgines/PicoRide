@@ -73,19 +73,23 @@ static void loopContadorDeTempo(void *pv)
                     break;
                 case PAUSAR:
                     estado = PAUSAR;
+                    equipmentoLigado = false;
                     break;
                 case CONTINUAR:
                     estado = CONTINUAR;
+                    if (tempo_restante > 0)
+                        equipmentoLigado = true;
                     break;
                 case RESETAR:
                     tempo_restante = 0;
+                    equipmentoLigado = false;
                     estado = RESETAR;
                     break;
                 }
                 xSemaphoreGive(mutexTemporizador);
             }
         }
-     
+
         if (estado == INICIAR || estado == CONTINUAR)
         {
             if (xSemaphoreTake(mutexTemporizador, portMAX_DELAY) == pdTRUE)
@@ -107,8 +111,8 @@ static void loopContadorDeTempo(void *pv)
 }
 
 void iniciarContadorDeTempo()
-{   
+{
     filaTemporizador = xQueueCreate(TAMANHO_FILA_TEMPO, sizeof(MsgTemporizador_t));
-    mutexTemporizador = xSemaphoreCreateMutex();  
+    mutexTemporizador = xSemaphoreCreateMutex();
     xTaskCreate(loopContadorDeTempo, "LoopContadorDeTempo", TAMANHO_PILHA_LOOP_CONTADOR_TEMPO, NULL, PRIORIDADE_LOOP_CONTADOR_TEMPO, NULL);
 }
