@@ -2,6 +2,10 @@
 
 #include "Sistema.h"
 
+#define TAMANHO_PILHA_LOOP_CONTADOR_TEMPO 128
+#define PRIORIDADE_LOOP_CONTADOR_TEMPO 3
+#define TAMANHO_FILA_TEMPO 4
+
 typedef enum
 {
     INICIAR,
@@ -19,8 +23,9 @@ typedef struct
 volatile uint32_t tempo_restante = 0;
 volatile uint32_t ultomo_tempo_restante = -1;
 volatile StatusTemporizador_t estado = RESETAR;
-static QueueHandle_t filaTemporizador;
-static SemaphoreHandle_t mutexTemporizador;
+
+QueueHandle_t filaTemporizador;
+SemaphoreHandle_t mutexTemporizador;
 
 void iniciarContador(uint32_t valor_ms)
 {
@@ -98,7 +103,7 @@ static void loopContadorDeTempo(void *pv)
 
 void iniciarContadorDeTempo()
 {   
-    filaTemporizador = xQueueCreate(4, sizeof(MsgTemporizador_t));
+    filaTemporizador = xQueueCreate(TAMANHO_FILA_TEMPO, sizeof(MsgTemporizador_t));
     mutexTemporizador = xSemaphoreCreateMutex();  
-    xTaskCreate(loopContadorDeTempo, "LoopContadorDeTempo", 128, NULL, 3, NULL);
+    xTaskCreate(loopContadorDeTempo, "LoopContadorDeTempo", TAMANHO_PILHA_LOOP_CONTADOR_TEMPO, NULL, PRIORIDADE_LOOP_CONTADOR_TEMPO, NULL);
 }

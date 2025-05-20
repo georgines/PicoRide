@@ -1,26 +1,26 @@
 #pragma once
 
-#include "FreeRTOS.h"
 #include "pico/stdlib.h"
 #include "hardware/uart.h"
-#include <stdio.h>
-#include <cstring>
-#include "Oled.h"
-#include "PWM.h"
+#include "FreeRTOS.h"
 #include "task.h"
 #include "queue.h"
 #include "semphr.h"
+#include "Oled.h"
+#include "PWM.h"
 #include "SerialBluetooth.h"
+#include <stdio.h>
+#include <cstring>
 
 // pinos tela
 #define PINO_SDA_TELA 14
 #define PINO_SCL_TELA 15
 
-// menu
-#define MODO_LIVRE 0
-#define MODO_MEMORIA 1
-#define MODO_ZERAR_X 2
-#define MODO_ZERAR_Y 3
+// pinos serial
+#define PINO_TX_SERIAL 0
+#define PINO_RX_SERIAL 1
+#define UART_SERIAL uart0
+#define BAUD_RATE_SERIAL 115200
 
 // linhas menu
 #define LINHA_TITULO 0
@@ -38,24 +38,22 @@
 #define DUTY_DESLIGAR_BUZZER DUTY_INICIAL_BUZZER
 #define TEMPO_BUZZER_MS 100
 
-#define TEMPO_5000_MS  5000
-#define TEMPO_10000_MS 10000
-#define TEMPO_20000_MS 20000
-#define TEMPO_30000_MS 30000 
-#define TEMPO_40000_MS 40000
-#define TEMPO_50000_MS 50000
-#define TEMPO_60000_MS 60000
+#define TEMPO_5_MIN 300000
+#define TEMPO_10_MIN 600000
+#define TEMPO_30_MIN 1800000
+#define TEMPO_60_MIN 3600000
 
 struct Sistema
-{   
+{
     PWM &buzzer;
     volatile absolute_time_t inicioAtivacao;
     volatile bool ativo;
 };
 
-QueueHandle_t fila_comandos; 
+QueueHandle_t fila_comandos;
 
-BluetoothSerial bt("PicoRide");
+BluetoothSerial bluetooth("PicoRide");
+
 bool dispostivoBluetoothConectado = false;
 bool ultimo_dispostivoBluetoothConectado = false;
 

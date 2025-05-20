@@ -3,11 +3,14 @@
 #include "Sistema.h"
 #include "auxiliarBuzzer.h"
 
+#define TAMANHO_DA_PILHA_LOOP_BLUETOOTH 8192
+#define PRIORIDADE_LOOP_BLUETOOTH 2
+
 void enviarComandoBluetooth(const char *mensagem)
 {
     if (!dispostivoBluetoothConectado)
-        return;   
-        bt.enviarString(mensagem);      
+        return;
+    bluetooth.enviarString(mensagem);
 }
 
 void aoConectar()
@@ -46,9 +49,14 @@ void callbackLoopBluetooth()
 
 void loopBluetooth(void *parametro)
 {
-    bt.definirCallbackRecebimento(callbackRecebimentoDados);
-    bt.definirCallbackConexao(aoConectar);
-    bt.definirCallbackDesconexao(aoDesconectar);
-    bt.iniciarLoopTimer(callbackLoopBluetooth, 50);
-    bt.executar();
+    bluetooth.definirCallbackRecebimento(callbackRecebimentoDados);
+    bluetooth.definirCallbackConexao(aoConectar);
+    bluetooth.definirCallbackDesconexao(aoDesconectar);
+    bluetooth.iniciarLoopTimer(callbackLoopBluetooth, 50);
+    bluetooth.executar();
+}
+
+void inicializarLoopBluetooth()
+{
+    xTaskCreate(loopBluetooth, "loopBluetooth", TAMANHO_DA_PILHA_LOOP_BLUETOOTH, nullptr, PRIORIDADE_LOOP_BLUETOOTH, nullptr);
 }

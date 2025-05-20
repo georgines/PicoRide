@@ -61,7 +61,7 @@ target_link_libraries(PicoRide
         hardware_gpio
         hardware_timer
         hardware_irq
-         pico_btstack_classic
+        pico_btstack_classic
         pico_btstack_cyw43
         pico_cyw43_arch_none
 )

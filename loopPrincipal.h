@@ -5,6 +5,10 @@
 #include "loopContadorTempo.h"
 #include "loopBluetooth.h"
 
+#define TAMANHO_DA_PILHA_LOOP_PRINCIPAL 8192
+#define TAMANHO_FILA_COMANDOS 8
+#define PRIORIDADE_LOOP_PRINCIPAL 2
+
 void exibirMensagem(const char *mensagem, uint32_t temporizador_ms)
 {
     char mensagem_formatada[64];
@@ -20,19 +24,19 @@ void processarComandoControle(char comando, bool &contador_pausado, volatile uin
     switch (comando)
     {
     case 'a':
-        temporizador_ms += TEMPO_5000_MS;
+        temporizador_ms += TEMPO_5_MIN;
         mensagem = "+5s no temporizador.";
         break;
     case 'b':
-        temporizador_ms += TEMPO_10000_MS;
+        temporizador_ms += TEMPO_10_MIN;
         mensagem = "+10s no temporizador.";
         break;
     case 'c':
-        temporizador_ms += TEMPO_20000_MS;
+        temporizador_ms += TEMPO_30_MIN;
         mensagem = "+20s no temporizador.";
         break;
     case 'd':
-        temporizador_ms += TEMPO_30000_MS;
+        temporizador_ms += TEMPO_60_MIN;
         mensagem = "+30s no temporizador.";
         break;   
     case 'i':
@@ -65,7 +69,7 @@ void processarComandoControle(char comando, bool &contador_pausado, volatile uin
 void loopPrincipal(void *parametro)
 {
     Sistema *sistema = reinterpret_cast<Sistema *>(parametro);
-    char comando = 0;
+    char comando = '\0';
     bool contador_pausado = false;
 
     while (true)
@@ -78,4 +82,10 @@ void loopPrincipal(void *parametro)
 
         vTaskDelay(pdMS_TO_TICKS(10));
     }
+}
+
+void inicializarLoopPrincipal(Sistema &sistema)
+{
+    fila_comandos = xQueueCreate(TAMANHO_FILA_COMANDOS, sizeof(char));
+    xTaskCreate(loopPrincipal, "loopPricipal", TAMANHO_DA_PILHA_LOOP_PRINCIPAL, (void *)&sistema, PRIORIDADE_LOOP_PRINCIPAL, nullptr);
 }
