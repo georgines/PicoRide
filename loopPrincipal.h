@@ -5,6 +5,14 @@
 #include "loopContadorTempo.h"
 #include "loopBluetooth.h"
 
+void exibirMensagem(const char *mensagem, uint32_t temporizador_ms)
+{
+    char mensagem_formatada[64];
+    snprintf(mensagem_formatada, sizeof(mensagem_formatada), "%s | Temporizador: %ums\n", mensagem, temporizador_ms);
+    enviarComandoBluetooth(mensagem_formatada);
+    printf(mensagem_formatada);
+}
+
 void processarComandoControle(char comando, bool &contador_pausado, volatile uint32_t &temporizador_ms, Sistema &sistema)
 {
     const char *mensagem = "";
@@ -13,57 +21,44 @@ void processarComandoControle(char comando, bool &contador_pausado, volatile uin
     {
     case 'a':
         temporizador_ms += TEMPO_5000_MS;
-        mensagem = "[CMD a] +5000ms";
+        mensagem = "+5s no temporizador.";
         break;
     case 'b':
         temporizador_ms += TEMPO_10000_MS;
-        mensagem = "[CMD b] +10000ms";
+        mensagem = "+10s no temporizador.";
         break;
     case 'c':
         temporizador_ms += TEMPO_20000_MS;
-        mensagem = "[CMD c] +20000ms";
+        mensagem = "+20s no temporizador.";
         break;
     case 'd':
         temporizador_ms += TEMPO_30000_MS;
-        mensagem = "[CMD d] +30000ms";
-        break;
-    case 'e':
-        temporizador_ms += TEMPO_40000_MS;
-        mensagem = "[CMD e] +40000ms";
-        break;
-    case 'f':
-        temporizador_ms += TEMPO_50000_MS;
-        mensagem = "[CMD f] +50000ms";
-        break;
-    case 'g':
-        temporizador_ms += TEMPO_60000_MS;
-        mensagem = "[CMD g] +60000ms";
-        break;
+        mensagem = "+30s no temporizador.";
+        break;   
     case 'i':
         if (temporizador_ms == 0)
         {
-            mensagem = "[CMD i] Nenhum tempo definido";
+            mensagem = "Defina o tempo antes de iniciar.";
             break;
         }
         iniciarContador(temporizador_ms);
-        mensagem = "[CMD i] Início da contagem";
+        mensagem = "Contagem iniciada.";
         break;
     case 'p':
         contador_pausado = pausarContador();
-        mensagem = contador_pausado ? "[CMD p] Contagem pausada" : "[CMD p] Contagem retomada";
+        mensagem = contador_pausado ? "Contagem pausada." : "Contagem retomada.";
         break;
     case 'r':
         temporizador_ms = 0;
         resetarContador();
-        mensagem = "[CMD r] Temporizador resetado";
+        mensagem = "Temporizador resetado.";
         break;
     default:
-        mensagem = "[CMD ?] Comando desconhecido";
+        mensagem = "Comando desconhecido.";
         break;
     }
 
-    enviarComandoBluetooth(mensagem);
-    printf("%s | Temporizador: %ums\n", mensagem, temporizador_ms);
+    exibirMensagem(mensagem, temporizador_ms);
     acionarBuzzer(sistema);
 }
 
