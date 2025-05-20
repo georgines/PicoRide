@@ -35,6 +35,14 @@ void BluetoothSerial::configurarGap(const char *nomeDispositivo)
     gap_discoverable_control(1);
     gap_ssp_set_io_capability(SSP_IO_CAPABILITY_DISPLAY_YES_NO);
 }
+void BluetoothSerial::liberarBuffer(uint8_t *&buffer)
+{
+    if (buffer)
+    {
+        std::free(buffer);
+        buffer = nullptr;
+    }
+}
 
 BluetoothSerial::BluetoothSerial(const char *nomeDispositivo)
 {
@@ -52,13 +60,19 @@ BluetoothSerial::BluetoothSerial(const char *nomeDispositivo)
 }
 
 BluetoothSerial::~BluetoothSerial()
-{
+{  
+    this->liberarBuffer(this->bufferRecebimento);
+    this->liberarBuffer(this->bufferEnvio);
     instancia = nullptr;
 }
 
 void BluetoothSerial::enviar(const uint8_t *dados, uint16_t tamanho)
 {
-    if (!this->canalRfcomm || tamanho > sizeof(this->bufferEnvio))
+    if (!this->canalRfcomm)
+        return;
+    this->liberarBuffer(this->bufferEnvio);
+    this->bufferEnvio = static_cast<uint8_t *>(std::malloc(tamanho));
+    if (!this->bufferEnvio)
         return;
     std::memcpy(this->bufferEnvio, dados, tamanho);
     this->tamanhoEnvio = tamanho;
@@ -164,16 +178,22 @@ void BluetoothSerial::tratarPacoteRfcomm(uint8_t *pacote, uint16_t tamanho)
     if (tamanho > sizeof(this->bufferRecebimento))
         return;
     this->tamanhoRecebido = tamanho;
+     this->liberarBuffer(this->bufferRecebimento);
+    this->bufferRecebimento = static_cast<uint8_t *>(std::malloc(tamanho));
+    if (this->bufferRecebimento)
+    {
     std::memcpy(this->bufferRecebimento, pacote, tamanho);
     if (this->callbackRecebimento)
         this->callbackRecebimento(this->bufferRecebimento, tamanho);
+    }
 }
 
 void BluetoothSerial::enviarBufferSePronto()
 {
-    if (this->tamanhoEnvio)
+    if (this->bufferEnvio && this->tamanhoEnvio)
     {
         rfcomm_send(this->canalRfcomm, this->bufferEnvio, this->tamanhoEnvio);
+        this->liberarBuffer(this->bufferEnvio);
         this->tamanhoEnvio = 0;
     }
 }
@@ -190,10 +210,12 @@ void BluetoothSerial::enviarStringFormatada(const char *formato, ...)
     char buffer[256];
     va_list args;
     va_start(args, formato);
-    int len = vsnprintf(buffer, sizeof(buffer), formato, args);
+    int len = vsnprintf(buffer, sizeof(buffer), formato, args);    
     va_end(args);
-    if (len <= 0 || (size_t)len > sizeof(buffer))
+    if (len <= 0)
         return;
+    if ((size_t)len > sizeof(buffer))
+        len = sizeof(buffer);
     this->enviar(reinterpret_cast<const uint8_t *>(buffer), len);
 }
 

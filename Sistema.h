@@ -54,9 +54,10 @@ struct Sistema
 };
 
 QueueHandle_t fila_comandos; 
-QueueHandle_t fila_bluetooth;
 
 BluetoothSerial bt("PicoRide");
+bool dispostivoBluetoothConectado = false;
+bool ultimo_dispostivoBluetoothConectado = false;
 
 absolute_time_t pegarTempoAbsolutoAtual();
 void inicializarContadorDeTempoDoBuzzer(Sistema &sistema, repeating_timer &timer);

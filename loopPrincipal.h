@@ -3,6 +3,7 @@
 #include "Sistema.h"
 #include "auxiliarBuzzer.h"
 #include "loopContadorTempo.h"
+#include "loopBluetooth.h"
 
 void processarComandoControle(char comando, bool &contador_pausado, volatile uint32_t &temporizador_ms, Sistema &sistema)
 {
@@ -61,18 +62,16 @@ void processarComandoControle(char comando, bool &contador_pausado, volatile uin
         break;
     }
 
+    enviarComandoBluetooth(mensagem);
     printf("%s | Temporizador: %ums\n", mensagem, temporizador_ms);
     acionarBuzzer(sistema);
 }
 
 void loopPrincipal(void *parametro)
 {
-
     Sistema *sistema = reinterpret_cast<Sistema *>(parametro);
-
     char comando = 0;
     bool contador_pausado = false;
-    
 
     while (true)
     {
@@ -81,7 +80,7 @@ void loopPrincipal(void *parametro)
         {
             processarComandoControle(comando, contador_pausado, tempo_restante, *sistema);
         }
-        
+
         vTaskDelay(pdMS_TO_TICKS(10));
     }
 }

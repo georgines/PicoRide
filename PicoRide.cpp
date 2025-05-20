@@ -30,14 +30,17 @@ int main()
         .inicioAtivacao = pegarTempoAbsolutoAtual(),
         .ativo = false};
 
-    fila_comandos = xQueueCreate(8, sizeof(char));
+   
    
 
     repeating_timer timer;
     inicializarContadorDeTempoDoBuzzer(sistema, timer);
 
+    fila_comandos = xQueueCreate(8, sizeof(char));
     xTaskCreate(loopPrincipal, "loopPricipal", 8192, (void *)&sistema, 2, NULL);
+
     xTaskCreate(loopBluetooth, "loopBluetooth", 8192, NULL, 2, NULL);
+
     iniciarContadorDeTempo();
     inicializarLoopExibicao();
     vTaskStartScheduler();
