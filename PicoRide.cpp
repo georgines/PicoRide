@@ -2,6 +2,7 @@
 #include "auxiliarBuzzer.h"
 #include "loopPrincipal.h"
 #include "loopBluetooth.h"
+#include "loopContadorTempo.h"
 
 
 int main()
@@ -29,18 +30,14 @@ int main()
         .ativo = false};
 
     fila_comandos = xQueueCreate(8, sizeof(char));
-
-    mutex_tempo = xSemaphoreCreateMutex();
+   
 
     repeating_timer timer;
     inicializarContadorDeTempoDoBuzzer(sistema, timer);
 
-    // repeating_timer_t tempo;
-    // iniciarContagemTempoDoCronometro(tempo);
-
     xTaskCreate(loopPrincipal, "loopPricipal", 8096, (void *)&sistema, 2, NULL);
     xTaskCreate(loopBluetooth, "loopBluetooth", 8096, NULL, 2, NULL);
-    // xTaskCreate(loopDisplay, "loopDisplay", 8096, (void *)&sistema, 2, NULL);
+    iniciarContadorDeTempo();
 
     vTaskStartScheduler();
     return 1;

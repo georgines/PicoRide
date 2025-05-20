@@ -2,7 +2,6 @@
 
 #include "Sistema.h"
 #include "auxiliarBuzzer.h"
-#include "auxiliarTempo.h"
 
 void receberSerialUsbEEnviarParaFila()
 {

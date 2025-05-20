@@ -2,41 +2,7 @@
 
 #include "Sistema.h"
 #include "auxiliarBuzzer.h"
-#include "auxiliarTempo.h"
-
-// Função para iniciar o contador
-inline void iniciarContador(uint32_t &tempo_ms)
-{
-    tempo_restante_ms = tempo_ms;
-    contador_ativo = true;
-    printf("[TIMER] Contador iniciado com %ums\n", tempo_ms);
-}
-
-// Função para pausar o contador
-inline bool pausarContador()
-{
-    if (contador_ativo)
-    {
-        contador_ativo = false;
-        printf("[TIMER] Contador pausado\n");
-        return true;
-    }
-    else
-    {
-        contador_ativo = true;
-        printf("[TIMER] Contador retomado\n");
-        return false;
-    }
-}
-
-// Função para resetar o contador
-inline void resetarContador()
-{
-    contador_ativo = false;
-    tempo_restante_ms = 0;
-    printf("[TIMER] Contador resetado\n");
-}
-
+#include "loopContadorTempo.h"
 
  void processarComandoControle(char comando, bool &contador_pausado, uint32_t &temporizador_ms)
 {
@@ -101,33 +67,25 @@ inline void resetarContador()
 
 void loopPrincipal(void *parametro)
 {
-    auto *sistema = static_cast<Sistema *>(parametro);
+   
 
     char comando = 0;
     bool contador_pausado = false;
-    static uint32_t temporizador_ms = 0;
+    uint32_t temporizador_ms = 0;
+
     while (true)
     {
-        // Receber comandos da fila
+       
         if (xQueueReceive(fila_comandos, &comando, pdMS_TO_TICKS(10)))
         {
             processarComandoControle(comando, contador_pausado, temporizador_ms);
         }
 
-        // Atualizar temporizador se não estiver pausado
-        if (!contador_pausado && temporizador_ms > 0)
+        if(tempo_restante != ultomo_tempo_restante)
         {
-            temporizador_ms -= 10; // Decrementa 10ms por iteração
-
-            if (temporizador_ms == 0)
-            {
-                printf("[TIMER] Temporizador chegou a zero!\n");
-                resetarContador();
-                contador_pausado = true; // Pausa automaticamente ao atingir zero
-            }
+            printf("Tempo restante: %u ms\n", tempo_restante);
+            ultomo_tempo_restante = tempo_restante;
         }
-
-        // Delay para evitar polling excessivo
         vTaskDelay(pdMS_TO_TICKS(10));
     }
 }
