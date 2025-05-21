@@ -96,6 +96,3 @@ A biblioteca de Bluetooth utilizada neste projeto foi criada com base na seguint
 
 [MrGreensWorkshop RasPiPicoSDK_BT_Classic_SPP](https://github.com/MrGreensWorkshop/RasPiPicoSDK_BT_Classic_SPP/tree/main)
 
-## Licença
-
-Este projeto é open-source e está disponível sob a licença MIT.
