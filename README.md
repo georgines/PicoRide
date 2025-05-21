@@ -68,6 +68,14 @@ PicoRide é um projeto portátil de gestão de locação de veículos infantis, 
 
 Agora o dispositivo está pronto para uso via Bluetooth!
 
+### Depuração Serial
+
+Para utilizar a comunicação serial:
+
+- Conecte um adaptador USB-Serial ao dispositivo.
+- Conecte o GND do adaptador ao GND do Pico, o RX do adaptador ao TX do Pico (GPIO 0), e o TX do adaptador ao RX do Pico (GPIO 1).
+- Configure a velocidade da comunicação serial para 115200 bps.
+
 ## Desenvolvedores
 
 - Georgines Bezerra: [georgines](https://github.com/georgines)
