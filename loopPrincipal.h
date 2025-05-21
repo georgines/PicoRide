@@ -27,19 +27,19 @@ void processarComandoControle(char comando, bool &contador_pausado, volatile uin
     {
     case 'a':
         temporizador_ms += TEMPO_5_MIN;
-        mensagem = "+5s no temporizador.";
+        mensagem = "+5 min no temporizador.";
         break;
     case 'b':
         temporizador_ms += TEMPO_10_MIN;
-        mensagem = "+10s no temporizador.";
+        mensagem = "+10 min no temporizador.";
         break;
     case 'c':
         temporizador_ms += TEMPO_30_MIN;
-        mensagem = "+20s no temporizador.";
+        mensagem = "+30 min no temporizador.";
         break;
     case 'd':
         temporizador_ms += TEMPO_60_MIN;
-        mensagem = "+30s no temporizador.";
+        mensagem = "+60 min no temporizador.";
         break;   
     case 'i':
         if (temporizador_ms == 0)

@@ -40,13 +40,33 @@ PicoRide é um projeto portátil de gestão de locação de veículos infantis, 
 3. Conecte o Raspberry Pi Pico W ao computador via USB enquanto mantém o botão BOOTSEL pressionado para entrar no modo de carregamento do bootloader.
 4. Após compilar, clique no botão "Run" da extensão para carregar o binário no dispositivo.
 
-### Uso da Serial
+## Como Usar o Dispositivo Bluetooth
 
-Para utilizar a comunicação serial:
+1. **Baixe o Aplicativo**  
+   Acesse a loja de aplicativos do seu smartphone e baixe o app [Serial Bluetooth Terminal](https://play.google.com/store/apps/details?id=de.kai_morich.serial_bluetooth_terminal&hl=pt_BR).
 
-- Conecte um adaptador USB-Serial ao dispositivo.
-- Conecte o GND do adaptador ao GND do Pico, o RX do adaptador ao TX do Pico (GPIO 0), e o TX do adaptador ao RX do Pico (GPIO 1).
-- Configure a velocidade da comunicação serial para 115200 bps.
+2. **Configuração dos Botões**  
+   Configure os botões no aplicativo para enviar os seguintes comandos correspondentes às funcionalidades do dispositivo. O nome do botão deve refletir a ação realizada:
+
+   - **Botão `+5 min`**: Envia o comando **`a`** para adicionar +5 minutos ao temporizador.
+   - **Botão `+10 min`**: Envia o comando **`b`** para adicionar +10 minutos ao temporizador.
+   - **Botão `+30 min`**: Envia o comando **`c`** para adicionar +30 minutos ao temporizador.
+   - **Botão `+60 min`**: Envia o comando **`d`** para adicionar +60 minutos ao temporizador.
+   - **Botão `Iniciar`**: Envia o comando **`i`** para iniciar a contagem (se o temporizador estiver configurado).
+   - **Botão `Pausar/Retomar`**: Envia o comando **`p`** para pausar ou retomar a contagem.
+   - **Botão `Resetar`**: Envia o comando **`r`** para resetar o temporizador.
+
+3. **Pareamento com o Smartphone**  
+   - Ative o Bluetooth no seu smartphone e selecione o dispositivo para parear.
+   - No aplicativo, clique no menu superior esquerdo (ícone com 3 traços horizontais) e selecione "Devices".
+   - Escolha o dispositivo correspondente ao PicoRide para realizar o pareamento.
+
+4. **Conexão com o Dispositivo**  
+   - Retorne à tela principal do aplicativo.
+   - Clique no ícone de conexão (primeiro ícone no lado direito).
+   - Após conectar, você poderá enviar os comandos configurados para controlar o dispositivo.
+
+Agora o dispositivo está pronto para uso via Bluetooth!
 
 ## Desenvolvedores
 
