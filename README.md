@@ -1,5 +1,7 @@
 # PicoRide
 
+![pico ride](img\pico_ride.jpeg)
+
 ## Visão Geral
 
 PicoRide é um projeto portátil de gestão de locação de veículos infantis, como motos elétricas, controlado via Bluetooth. Ele permite gerenciar o temporizador dos veículos, oferecendo uma solução prática e eficiente para locações temporárias. O projeto demonstra a integração de sistemas operacionais em tempo real com hardware embarcado para criar uma aplicação funcional.
@@ -45,6 +47,8 @@ PicoRide é um projeto portátil de gestão de locação de veículos infantis, 
 1. **Baixe o Aplicativo**  
    Acesse a loja de aplicativos do seu smartphone e baixe o app [Serial Bluetooth Terminal](https://play.google.com/store/apps/details?id=de.kai_morich.serial_bluetooth_terminal&hl=pt_BR).
 
+![terminal bluetooth](img/terminal_tela_teste_conexao.jpeg)
+
 2. **Configuração dos Botões**  
    Configure os botões no aplicativo para enviar os seguintes comandos correspondentes às funcionalidades do dispositivo. O nome do botão deve refletir a ação realizada:
 
@@ -72,7 +76,7 @@ Agora o dispositivo está pronto para uso via Bluetooth!
 
 Para utilizar a comunicação serial:
 
-- Conecte um adaptador USB-Serial ao dispositivo.
+- Conecte um adaptador USB-Serial ao dispositivo (opcional durante o desenvolvimento).
 - Conecte o GND do adaptador ao GND do Pico, o RX do adaptador ao TX do Pico (GPIO 0), e o TX do adaptador ao RX do Pico (GPIO 1).
 - Configure a velocidade da comunicação serial para 115200 bps.
 
