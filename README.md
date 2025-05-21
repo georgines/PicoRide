@@ -1,6 +1,8 @@
 # PicoRide
 
-![pico ride](img\pico_ride.jpeg)
+<div align="center">
+  <img src="img/pico_ride.jpeg" alt="pico ride" width="60%">
+</div>
 
 ## Visão Geral
 
@@ -47,7 +49,9 @@ PicoRide é um projeto portátil de gestão de locação de veículos infantis, 
 1. **Baixe o Aplicativo**  
    Acesse a loja de aplicativos do seu smartphone e baixe o app [Serial Bluetooth Terminal](https://play.google.com/store/apps/details?id=de.kai_morich.serial_bluetooth_terminal&hl=pt_BR).
 
-![terminal bluetooth](img/terminal_tela_teste_conexao.jpeg)
+<div align="center">
+  <img src="img/terminal_tela_teste_conexao.jpeg" alt="pico ride" width="60%">
+</div>
 
 2. **Configuração dos Botões**  
    Configure os botões no aplicativo para enviar os seguintes comandos correspondentes às funcionalidades do dispositivo. O nome do botão deve refletir a ação realizada:
